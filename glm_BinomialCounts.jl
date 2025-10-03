@@ -52,10 +52,16 @@ data[!, :proportion] = data.success ./ (data.success .+ data.failure)
 
 ### Fit the model using glm() and its @formula macro
 
-## ... GLM.jl will use the 'wts' column for the Binomial size parameter because the response is a proportion
-## ...(Side Note: adding the argument "weights = data.x .+ data.y" should work,  but it doesn't work!!)
 
-fit_glm = glm(@formula(proportion ~ x), data, Binomial(), LogitLink() )
+## ... this call to glm fails
+
+# fit_glm = glm(@formula(proportion ~ x), data, Binomial(), LogitLink() wts=wts)
+
+
+
+## ... this call to glm works
+
+fit_glm = glm(@formula(proportion ~ x), data, Binomial(), LogitLink(), wts=data.wts )
 
 
 ##println(fit_glm)
